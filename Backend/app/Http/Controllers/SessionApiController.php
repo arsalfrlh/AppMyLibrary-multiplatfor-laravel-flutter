@@ -46,7 +46,7 @@ class SessionApiController extends Controller
     
             return response()->json(['sukses' => true, 'pesan' => 'Berhasil Register', 'data' => $data]);
         }else{
-            return response()->json(['sukses' => true, 'pesan' => 'Gagal Register', 'data' => null]);
+            return response()->json(['sukses' => false, 'pesan' => 'Gagal Register', 'data' => null]);
         }
     }
 
