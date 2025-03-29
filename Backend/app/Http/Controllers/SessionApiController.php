@@ -81,6 +81,6 @@ class SessionApiController extends Controller
 
     public function logout(Request $request){
         $request->user()->tokens()->delete();
-        return response()->json(['pesan' => 'Berhasil Logout']);
+        return response()->json(['pesan' => 'Berhasil Logout', 'sukses' => true]);
     }
 }
