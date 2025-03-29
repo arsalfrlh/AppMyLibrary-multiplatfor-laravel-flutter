@@ -26,6 +26,7 @@ Route::post('/perpus/login',[SessionApiController::class,'login']);
 Route::middleware('auth:sanctum')->post('/perpus/logout',[SessionApiController::class,'logout']);
 
 Route::get('/perpus/buku',[BukuApiController::class,'index']);
+Route::post('/perpus/buku/cari',[BukuApiController::class,'cari']);
 Route::post('/perpus/buku/tambah',[BukuApiController::class,'create_buku']);
 Route::get('/perpus/buku/edit/{id}',[BukuApiController::class,'edit_buku']);
 Route::put('/perpus/buku/update/{id}',[BukuApiController::class,'update_buku']);
