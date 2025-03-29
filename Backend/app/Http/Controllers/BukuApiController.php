@@ -13,6 +13,16 @@ class BukuApiController extends Controller
         return response()->json(['sukses' => true, 'pesan' => 'berhasil menampilkan data buku', 'data' => $data]);
     }
 
+    public function cari(Request $request){
+        $cari = $request->cari;
+        if(strlen($cari)){
+            $data = Buku::where('judul','like',"%$cari%")->orWhere('penulis','like',"%$cari%")->get();
+        }else{
+            $data = null;
+        }
+        return response()->json(['sukses' => true, 'pesan' => 'Menampilkan hasil pencarian', 'data' => $data]);
+    }
+
     public function create_buku(Request $request){
         $validator = Validator::make($request->all(),[
             'gambar' => 'image|mimes:jpg,png,jpeg|max:2048',
