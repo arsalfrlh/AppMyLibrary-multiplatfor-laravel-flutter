@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
+// gunakan ini untuk install sacntum = composer require laravel/sanctum
 // gunakan ini untuk api auth = php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
 // untuk menggunakan api authentication menghapus tanda // pada api=>[ \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class, di file "kernel.php"
 class SessionApiController extends Controller
@@ -46,7 +47,7 @@ class SessionApiController extends Controller
     
             return response()->json(['sukses' => true, 'pesan' => 'Berhasil Register', 'data' => $data]);
         }else{
-            return response()->json(['sukses' => true, 'pesan' => 'Gagal Register', 'data' => null]);
+            return response()->json(['sukses' => false, 'pesan' => 'Gagal Register', 'data' => null]);
         }
     }
 
