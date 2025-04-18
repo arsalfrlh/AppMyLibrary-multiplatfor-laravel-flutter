@@ -25,21 +25,25 @@ class _PengembalianPageState extends State<PengembalianPage> {
   }
 
   void _pengembalian() async {
-    final pengembalianBuku = Peminjaman(
-      id: widget.peminjaman.id,
-      tanggalKembali: selectTanggal != null
-      ? "${selectTanggal!.year}-${selectTanggal!.month}-${selectTanggal!.day}"
-      : "",
-      jumlah: int.parse(jumlahController.text),
-    );
-    final response = await apiService.pengembalian(pengembalianBuku, widget.peminjaman.id);
-    if(response['success'] == true){
-    Navigator.pop(context);
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response['message']), backgroundColor: Colors.green));
-    }else if(response['success'] == false){
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response['message']), backgroundColor: Colors.red));
+    if(jumlahController.text.isNotEmpty && selectTanggal != null){
+      final pengembalianBuku = Peminjaman(
+        id: widget.peminjaman.id,
+        tanggalKembali: selectTanggal != null
+        ? "${selectTanggal!.year}-${selectTanggal!.month}-${selectTanggal!.day}"
+        : "",
+        jumlah: int.parse(jumlahController.text),
+      );
+      final response = await apiService.pengembalian(pengembalianBuku, widget.peminjaman.id);
+      if(response['success'] == true){
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response['message']), backgroundColor: Colors.green));
+      }else if(response['success'] == false){
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response['message']), backgroundColor: Colors.red));
+      }else{
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Server sedang error'), backgroundColor: Colors.red));
+      }
     }else{
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Server sedang error'), backgroundColor: Colors.red));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Semua field tidak boleh kosong'), backgroundColor: Colors.red));
     }
   }
 

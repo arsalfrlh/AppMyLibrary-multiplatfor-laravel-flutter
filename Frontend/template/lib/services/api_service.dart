@@ -64,6 +64,7 @@ class ApiService {
     headers: {'Authorization': 'Bearer $token'});
     
     await key.remove('token');
+    await key.remove('statusLogin'); //mengremove statusLogin
   }
   
   Future<void> addBuku(Buku buku, XFile? gambar)async{

@@ -19,6 +19,7 @@ class _LoginPageState extends State<LoginPage> {
     if(response['sukses'] == true){ //saat sudah di return json decode dari class ApiService dan jika arraykey suksesnya true akan mengarahkan ke tampilan HomePage dan mengisi token di SharedPreferences dan menampilkan pesan
       final key = await SharedPreferences.getInstance();
       await key.setString('token', response['data']['token']);
+      await key.setBool('statusLogin', true); // Menyimpan statusLogin bool true di SharedPreferences
 
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response['pesan']), backgroundColor: Colors.green,));
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));

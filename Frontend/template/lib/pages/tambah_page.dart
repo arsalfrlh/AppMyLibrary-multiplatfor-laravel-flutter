@@ -107,16 +107,20 @@ class _TambahPageState extends State<TambahPage> {
                         ),
                         ElevatedButton(
                           onPressed: () async{
-                            final newBuku = Buku(
-                              id: 0,
-                              judul: judulController.text,
-                              penulis: penulisController.text,
-                              stok: int.parse(stokController.text),
-                            );
-                            await apiService.addBuku(newBuku, gambar).then((_) {
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Berhasil menambahkan data buku'), backgroundColor: Colors.green,));
-                            });
-                            Navigator.pop(context);
+                            if(judulController.text.isNotEmpty && penulisController.text.isNotEmpty && stokController.text.isNotEmpty){
+                              final newBuku = Buku(
+                                id: 0,
+                                judul: judulController.text,
+                                penulis: penulisController.text,
+                                stok: int.parse(stokController.text),
+                              );
+                              await apiService.addBuku(newBuku, gambar).then((_) {
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Berhasil menambahkan data buku'), backgroundColor: Colors.green,));
+                                Navigator.pop(context);
+                              });
+                            }else{
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Semua Field tidak boleh kosong'), backgroundColor: Colors.red,));
+                            }
                           },
                           style: ElevatedButton.styleFrom(
                             elevation: 0,

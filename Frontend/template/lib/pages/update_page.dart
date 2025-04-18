@@ -121,20 +121,24 @@ class _UpdatePageState extends State<UpdatePage> {
                         ),
                         ElevatedButton(
                           onPressed: () async {
-                            final newBuku = Buku(
-                              id: 0,
-                              judul: judulController.text,
-                              penulis: penulisController.text,
-                              stok: int.parse(stokController.text),
-                            );
-                            final response = await apiService.updateBuku(newBuku, widget.buku.id);
-                            if(response['sukses'] == true){
-                              Navigator.pop(context);
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response['pesan']), backgroundColor: Colors.green,));
-                            }else if(response['sukses'] == false){
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response['pesan']), backgroundColor: Colors.red,));
+                            if(judulController.text.isNotEmpty && penulisController.text.isNotEmpty && stokController.text.isNotEmpty){
+                              final newBuku = Buku(
+                                id: 0,
+                                judul: judulController.text,
+                                penulis: penulisController.text,
+                                stok: int.parse(stokController.text),
+                              );
+                              final response = await apiService.updateBuku(newBuku, widget.buku.id);
+                              if(response['sukses'] == true){
+                                Navigator.pop(context);
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response['pesan']), backgroundColor: Colors.green,));
+                              }else if(response['sukses'] == false){
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response['pesan']), backgroundColor: Colors.red,));
+                              }else{
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Server sedang error'), backgroundColor: Colors.red,));
+                              }
                             }else{
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Server sedang error'), backgroundColor: Colors.red,));
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Semua Field tidak boleh kosong'), backgroundColor: Colors.red,));
                             }
                           },
                           style: ElevatedButton.styleFrom(

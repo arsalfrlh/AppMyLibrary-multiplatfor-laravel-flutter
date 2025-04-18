@@ -50,23 +50,27 @@ class _PinjamPageState extends State<PinjamPage> {
   }
 
   void _pinjam() async {
-    final pinjamBuku = Peminjaman(
-      id: 0,
-      id_buku: widget.buku.id,
-      jumlah: int.parse(jumlahController.text),
-      tanggalPinjam: selectTanggal != null
-      ? "${selectTanggal!.year}-${selectTanggal!.month}-${selectTanggal!.day}"
-      : "",
-    );
+    if(jumlahController.text.isNotEmpty && selectTanggal != null){
+      final pinjamBuku = Peminjaman(
+        id: 0,
+        id_buku: widget.buku.id,
+        jumlah: int.parse(jumlahController.text),
+        tanggalPinjam: selectTanggal != null
+        ? "${selectTanggal!.year}-${selectTanggal!.month}-${selectTanggal!.day}"
+        : "",
+      );
 
-    final response = await apiService.pinjam(pinjamBuku, _user!.id); //menympan data api di variabel response
-    if(response['success'] == true){ //return dari function pinjam| jika arraykey successnya true akan mengisi data peminjaman di database dan mengarahkan ke peminjamn user dan menampilkan pesan
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => PeminjamanPage(id_user: _user!.id)));
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response['message']), backgroundColor: Colors.green));
-    }else if(response['success'] == false){
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response['message']), backgroundColor: Colors.red));
+      final response = await apiService.pinjam(pinjamBuku, _user!.id); //menympan data api di variabel response
+      if(response['success'] == true){ //return dari function pinjam| jika arraykey successnya true akan mengisi data peminjaman di database dan mengarahkan ke peminjamn user dan menampilkan pesan
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => PeminjamanPage(id_user: _user!.id)));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response['message']), backgroundColor: Colors.green));
+      }else if(response['success'] == false){
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response['message']), backgroundColor: Colors.red));
+      }else{
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Server sedang error'), backgroundColor: Colors.red));
+      }
     }else{
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Server sedang error'), backgroundColor: Colors.red));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Semua field tidak boleh kosong'), backgroundColor: Colors.red));
     }
   }
 
