@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:template/models/user.dart';
+import 'package:template/pages/book_page.dart';
 import 'package:template/pages/cari_page.dart';
 import 'package:template/pages/home_page.dart';
 import 'package:template/pages/peminjaman_page.dart';
@@ -77,7 +78,10 @@ class _BukuPageState extends State<BukuPage> {
               ).then((_) => fetchBuku());
             },
             icon: Icon(Icons.add),
-          )
+          ),
+          IconButton(onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => BookPage()));
+          }, icon: Icon(Icons.book))
         ],
       ),
       body: _user == null
