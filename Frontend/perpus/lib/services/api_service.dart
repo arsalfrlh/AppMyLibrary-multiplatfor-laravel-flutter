@@ -61,11 +61,11 @@ class ApiService {
     await key.remove('token');
   }
 
-  Future<List<Buku>> getAllBuku() async {
+  Future<List<Buku>> getAllBuku() async { //function return yg mengembalikan data List<Buku>
     final response = await http.get(Uri.parse('$baseUrl/perpus/buku'));
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body)['data'];
-      return data.map((item) => Buku.fromJson(item)).toList();
+      return data.map((item) => Buku.fromJson(item)).toList(); //ubah item dari json menjadi objek Buku
     } else {
       throw Exception('Data Gagal dimuat');
     }
