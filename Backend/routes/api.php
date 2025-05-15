@@ -28,7 +28,7 @@ Route::middleware('auth:sanctum')->post('/perpus/logout',[SessionApiController::
 Route::get('/perpus/buku',[BukuApiController::class,'index']);
 Route::post('/perpus/buku/cari',[BukuApiController::class,'cari']);
 Route::post('/perpus/buku/tambah',[BukuApiController::class,'create_buku']);
-Route::get('/perpus/buku/edit/{id}',[BukuApiController::class,'edit_buku']);
+Route::post('/perpus/buku/edit',[BukuApiController::class,'edit_buku']);
 Route::put('/perpus/buku/update/{id}',[BukuApiController::class,'update_buku']);
 Route::delete('/perpus/buku/hapus/{id}',[BukuApicontroller::class,'hapus_buku']);
 
@@ -40,3 +40,5 @@ Route::get('/perpus/laporan',[PeminjamanApiController::class,'laporan']);
 Route::put('/perpus/laporan/disetujui/{id}',[PeminjamanApiController::class,'setuju']);
 Route::put('/perpus/laporan/ditolak/{id}',[PeminjamanApiController::class,'tolak']);
 Route::delete('/perpus/laporan/hapus/{id}',[PeminjamanApiController::class,'hapus']);
+
+Route::get('/chart',[PeminjamanApiController::class,'chart']);

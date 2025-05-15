@@ -53,9 +53,39 @@ class BukuApiController extends Controller
         return response()->json(['sukses' => true, 'pesan' => 'berhasil menambahkan data buku', 'data' => $data]);
     }
 
-    public function edit_buku($id){
-        $data = Buku::where('id',$id)->get();
-        return response()->json(['sukses' => true, 'pesan' => 'berhasil menampilkan data buku yang dipilih', 'data' => $data]);
+    public function edit_buku(Request $request){
+        $validator = Validator::make($request->all(),[
+            'gambar' => 'image|mimes:jpg,jpeg,png|max:2048',
+            'judul' => 'required',
+            'penulis' => 'required',
+            'stok' => 'required',
+        ]);
+
+        if($validator->fails()){
+            return response()->json(['message' => 'ada kesalahan', 'success' => false, 'data' => $validator->errors()]);
+        }
+
+        $buku = Buku::where('id',$request->id)->first();
+        if($request->hasFile('gambar')){
+            if($buku->gambar && file_exists(public_path('images/'.$buku->gambar))){
+                unlink(public_path('images/'.$buku->gambar));
+            }
+
+            $gambar = $request->file('gambar');
+            $nmgambar = time() .'_'. $gambar->getClientOriginalName();
+            $gambar->move(public_path('images'),$nmgambar);
+        }else{
+            $nmgambar = $buku->gambar;
+        }
+
+        $data = Buku::where('id',$request->id)->update([
+            'gambar' => $nmgambar,
+            'judul' => $request->judul,
+            'penulis' => $request->penulis,
+            'stok' => $request->stok,
+        ]);
+
+        return response()->json(['message' => 'Update Buku Berhasil', 'success' => true, 'data' => $data]);
     }
 
     public function update_buku(Request $request,$id){

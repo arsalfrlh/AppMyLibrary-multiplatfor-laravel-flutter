@@ -10,7 +10,7 @@ import 'package:template/models/user.dart';
 class ApiService {
   final String baseUrl = 'http://10.0.2.2:8000/api';
 
-  Future<Map<String, dynamic>> login(String email, String password) async { //menyimpan data json yg sudah di decode (pesan,sukses,data) kedalam tpie data String| menyimpan data json yg sudah di decode (isi pesan, isi sukses, isi data) kelama tpie data dynamic 
+  Future<Map<String, dynamic>> login(String email, String password) async {
     final response = await http.post(Uri.parse('$baseUrl/perpus/login'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({'email': email, 'password': password}));
@@ -69,6 +69,20 @@ class ApiService {
   
   Future<void> addBuku(Buku buku, XFile? gambar)async{
     final request = http.MultipartRequest('POST',Uri.parse('$baseUrl/perpus/buku/tambah'));
+    request.fields['judul'] = buku.judul;
+    request.fields['penulis'] = buku.penulis;
+    request.fields['stok'] = buku.stok.toString();
+
+    if(gambar != null){
+      request.files.add(await http.MultipartFile.fromPath('gambar', gambar.path));
+    }
+
+    await request.send();
+  }
+
+  Future<void> editBuku(Buku buku, XFile? gambar)async{
+    final request = http.MultipartRequest('POST',Uri.parse('$baseUrl/perpus/buku/edit'));
+    request.fields['id'] = buku.id.toString();
     request.fields['judul'] = buku.judul;
     request.fields['penulis'] = buku.penulis;
     request.fields['stok'] = buku.stok.toString();

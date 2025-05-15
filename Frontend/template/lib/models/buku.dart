@@ -20,7 +20,6 @@ class Buku {
   Map<String, dynamic> toJson(){
     return{
       'id': id,
-      'gambar': gambar,
       'judul':judul,
       'penulis': penulis,
       'stok': stok,

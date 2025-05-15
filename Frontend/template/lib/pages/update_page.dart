@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:template/models/buku.dart';
 import 'package:template/services/api_service.dart';
 
@@ -15,6 +16,8 @@ class _UpdatePageState extends State<UpdatePage> {
   late TextEditingController judulController;
   late TextEditingController penulisController;
   late TextEditingController stokController;
+  final pilih = ImagePicker();
+  XFile? gambar;
 
   @override
   void initState() {
@@ -53,6 +56,9 @@ class _UpdatePageState extends State<UpdatePage> {
                     color: Colors.grey,
                     child: Icon(Icons.image_not_supported),
                   ),
+                  ElevatedButton(onPressed: () async{
+                    gambar = await pilih.pickImage(source: ImageSource.gallery);
+                  }, child: Text('Pilih Gambar')),
                   SizedBox(height: constraints.maxHeight * 0.05),
                   Form(
                     child: Column(
@@ -122,21 +128,16 @@ class _UpdatePageState extends State<UpdatePage> {
                         ElevatedButton(
                           onPressed: () async {
                             if(judulController.text.isNotEmpty && penulisController.text.isNotEmpty && stokController.text.isNotEmpty){
-                              final newBuku = Buku(
-                                id: 0,
+                              final editBuku = Buku(
+                                id: widget.buku.id,
                                 judul: judulController.text,
                                 penulis: penulisController.text,
                                 stok: int.parse(stokController.text),
                               );
-                              final response = await apiService.updateBuku(newBuku, widget.buku.id);
-                              if(response['sukses'] == true){
+                              await apiService.editBuku(editBuku, gambar).then((_){
                                 Navigator.pop(context);
-                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response['pesan']), backgroundColor: Colors.green,));
-                              }else if(response['sukses'] == false){
-                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response['pesan']), backgroundColor: Colors.red,));
-                              }else{
-                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Server sedang error'), backgroundColor: Colors.red,));
-                              }
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Update Buku berhasil'), backgroundColor: Colors.green,));
+                              });
                             }else{
                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Semua Field tidak boleh kosong'), backgroundColor: Colors.red,));
                             }
@@ -148,7 +149,7 @@ class _UpdatePageState extends State<UpdatePage> {
                             minimumSize: const Size(double.infinity, 48),
                             shape: const StadiumBorder(),
                           ),
-                          child: const Text("Simpan"),
+                          child: const Text("Update"),
                         ),
                         const SizedBox(height: 16.0),
                       ],
