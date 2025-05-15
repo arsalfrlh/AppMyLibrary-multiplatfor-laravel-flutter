@@ -56,7 +56,7 @@ class _BookPageState extends State<BookPage> {
   }
 
 //bisa juga menggunakan ini utk perulangan GridView
-//utk stfl perulangan wajib di dalam SizedBox agar tdk error
+//utk stfl perulangan wajib di dalam SizedBox, Container atw Widget yg memilik height tertentu agar tdk error| jika tidak pelurulangan tdk tahu seberapa tinggi dirinya harus dirender,
 //body:
 //   SizedBox(
 //   height: 500, // atau gunakan MediaQuery untuk adaptif
