@@ -8,6 +8,13 @@ use Illuminate\Support\Facades\Validator;
 
 class BukuApiController extends Controller
 {
+    var $data = "Ini data dlm class"; //variabel di dlm class
+
+    function data(){
+        $hasil = $this->data; //jika ingin menggunakan variabel dlm class hrus menggunakan $this->
+        return $hasil;
+    }
+
     public function index(){
         $data = Buku::all();
         return response()->json(['sukses' => true, 'pesan' => 'berhasil menampilkan data buku', 'data' => $data]);

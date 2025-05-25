@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:template/models/buku.dart';
@@ -5,6 +6,7 @@ import 'package:template/models/user.dart';
 import 'package:template/pages/buku_page.dart';
 import 'package:template/pages/cari_page.dart';
 import 'package:template/pages/peminjaman_page.dart';
+import 'package:template/pages/perpus_page.dart';
 import 'package:template/pages/pinjam_page.dart';
 import 'package:template/pages/update_page.dart';
 import 'package:template/services/api_service.dart';
@@ -56,7 +58,7 @@ class _BookPageState extends State<BookPage> {
   }
 
 //bisa juga menggunakan ini utk perulangan GridView
-//utk stfl perulangan wajib di dalam SizedBox, Container atw Widget yg memilik height tertentu agar tdk error| jika tidak pelurulangan tdk tahu seberapa tinggi dirinya harus dirender,
+//utk stfl perulangan wajib di dalam SizedBox agar tdk error
 //body:
 //   SizedBox(
 //   height: 500, // atau gunakan MediaQuery untuk adaptif
@@ -82,7 +84,11 @@ class _BookPageState extends State<BookPage> {
         appBar: AppBar(
           title: Text('Daftar Buku'),
           backgroundColor: Colors.blue,
-          actions: [],
+          actions: [
+            IconButton(onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => PerpusPage()));
+            }, icon: Icon(Icons.backpack))
+          ],
         ),
         body: _user == null
             ? Center(
@@ -362,15 +368,7 @@ class ProductCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: buku.gambar != null
-                    ? Image.network(
-                        'http://10.0.2.2:8000/images/${buku.gambar}',
-                        errorBuilder: (context, error, stackTrace) => Container(
-                          child: Icon(
-                            Icons.broken_image,
-                            color: Colors.grey,
-                          ),
-                        ),
-                      )
+                    ? CachedNetworkImage(imageUrl: 'http://10.0.2.2:8000/images/${buku.gambar}', fit: BoxFit.cover, errorWidget: (context, url, error) => Icon(Icons.broken_image, size: 120,),) //import liblarynya flutter pub add cached_network_image
                     : Container(
                         child: Icon(Icons.image_not_supported),
                         color: Colors.grey,

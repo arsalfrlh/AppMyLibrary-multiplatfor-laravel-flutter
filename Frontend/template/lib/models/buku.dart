@@ -1,11 +1,11 @@
 class Buku {
-  final int id;
+  final int id; //variabel dalam class
   final String? gambar;
   final String judul;
   final String penulis;
   final int stok;
 
-  Buku({required this.id, this.gambar, required this.judul, required this.penulis, required this.stok});
+  Buku({required this.id, this.gambar, required this.judul, required this.penulis, required this.stok}); //jika ingin menggunakan variable dlm class ke construktor/function harus menggunakan this
 
   factory Buku.fromJson(Map<String, dynamic> json){
     return Buku(
